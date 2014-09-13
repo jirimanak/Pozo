@@ -99,13 +99,67 @@ global_var_name, instance_var_name,
 function_parameter_name, local_var_name.
 '''
 
+from ConfigParser import SafeConfigParser
+
 class Properties(object):
     '''
     classdocs
-    '''
-
-    def __init__(self, params):
+    '''    
+    def __init__(self, cfg_file = "pozo.ini"):
         '''
         Constructor
         '''
+        self.config_parser = SafeConfigParser()
+        self.cfgfile = cfg_file
+        if ( len(self.cfgfile) < 1):
+            self.cfgfile = "pozo.ini"
+            
+        self.section_tcpip = 'tcpip'
+        self.ipaddress_name = 'ip_address'
+        self.ipaddress = '127.0.0.1'
+        self.port_name = 'port'
+        self.port = 8888
+        
+        self.section_output_settings = 'output_settings'
+        self.outputtype_name = "output_type"
+        self.outputtype = "nice" # json, raw
+        self.debuglevel = 0;
+        
+          
+        found = self.config_parser.read(cfg_file)
+        if (len(found) > 0):
+            self.read_configdata()
+        else:
+            self.write_configdata()
 
+    def read_tcpip(self, cfgitems):
+        for name, value in cfgitems:
+            if (name == self.ipaddress_name):
+                self.ipaddress = value
+            elif (name == self.port_name):
+                self.port = int(value)
+    
+    def read_output_settings(self, cfgitems):
+        pass
+            
+    def read_configdata(self):
+        for section_name in self.config_parser.sections():
+            if (section_name == 'tcpip'):
+                self.read_tcpip(self.config_parser.items(section_name))
+            elif (section_name ==  'output_settings'):
+                self.read_output_settings(self.config_parser.items(section_name))
+    
+    def write_configdata(self):
+        self.config_parser.add_section(self.section_tcpip)
+        self.config_parser.set(self.section_tcpip, self.ipaddress_name, self.ipaddress)
+        self.config_parser.set(self.section_tcpip, self.port_name, str(self.port))
+        
+        self.config_parser.add_section(self.section_output_settings)
+        self.config_parser.set(self.section_output_settings, self.outputtype_name, self.outputtype)
+        
+        cfg_file = open(self.cfgfile, 'w+')
+        self.config_parser.write(cfg_file)
+        cfg_file.close()
+        if (VERBOSE > 0):
+            print "properties saved to file: {0:}".format(self.cfgfile) 
+        

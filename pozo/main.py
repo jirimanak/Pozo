@@ -105,6 +105,7 @@ USAGE
         properties.POZOPORT = args.port
         
         #CMDLIST = command.CmdList()
+        props = properties.Properties()
         
         '''
         if VERBOSE > 0:
