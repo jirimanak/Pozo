@@ -59,6 +59,7 @@ pozocode = {
   'READ1WADDR':122, # read address of 1 wire device
   'READ1WTEMP':123, # read temperature of 1 wire device
   'READHEADERVER':124, # return version of header - to ensure codes compatibility         
+  'UPTIME':125, # return version of header - to ensure codes compatibility         
   
   
 # 200 - 299 response codes
@@ -82,7 +83,7 @@ pozocode = {
 !!!!   CHANGE HEADERVERSION after changing values in pozocode dictionary !!!!!
 '''
 
-HEADERVERSION = 101
+HEADERVERSION = 102
 
 VERBOSE = 1
 # POZOIP = '127.0.0.1'

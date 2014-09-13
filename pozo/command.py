@@ -534,8 +534,28 @@ class SetTime(PozoCmd):
     def print_raw(self):
         print self.cmdrecord.value1       
         
-        
-        
+
+class Uptime(PozoCmd):
+    
+    def __init__(self):
+        PozoCmd.__init__(self)
+        self.cmd = 'uptime'
+        self.help = 'Tell how long the Arduino has been running.'
+        self.pozocode = 'UPTIME'
+        self.delay = 0
+          
+    def method(self, arg1, arg2):
+        msg = self.create_message()       
+        answ = PozoCmd.pb.send_record(msg)
+        self.cmdrecord.parse_answer(answ)
+        return self.cmdrecord.errorcode       
+    
+    def print_nice(self):
+        self.cmdrecord.value1 = int(self.cmdrecord.value1)
+        print "POZO uptime {0:} ".format(self.cmdrecord.value1)
+
+    def print_raw(self):
+        print int(self.cmdrecord.value1)        
         
         
 '''
@@ -588,6 +608,7 @@ class CmdList(object):
         self.cmdlist.append(HeaderVersion())
         self.cmdlist.append(SetVerbose())
         self.cmdlist.append(Get1wNum())
+        self.cmdlist.append(Uptime())
 
         
     def find_entry(self, cmdstring):
