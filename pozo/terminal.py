@@ -34,6 +34,12 @@ class ShellPrompt(cmd.Cmd):
     def do_EOF(self, line):
         return True
 
+    def do_exit(self, line):
+        return True
+
+    def do_quit(self, line):
+        return True
+
     def do_shell(self, line):
         "Run a shell command"
         print "running shell command:", line
@@ -49,41 +55,6 @@ class ShellPrompt(cmd.Cmd):
     def default(self, line):
         command.CMDLIST.execute(line)
         
-   
-        
+           
 def interactive():
     ShellPrompt().cmdloop()
-
-    
-def old_interactive():    
-    ''' control interactive command line mode '''
-    goahead = True
-    while(goahead):    
-        ''' read user input ''' 
-        user_input = raw_input(prompt)
-        
-        if ("last" in user_input):
-            ''' if command is 'last' get last command from the queue '''
-            user_input = history.get();
-            ''' print out last command on the prompt '''
-            print("{0}{1}", prompt, user_input )
-        else:
-            ''' ... else store command for history '''
-            history.put(user_input)
-
-        arg = user_input.split()
-
-        
-        if("quit" in arg[0]):
-            print('bye!')
-            goahead = False;
-            
-        elif("connect" in arg[0]):
-            ''' second argument can be ip address '''
-            if (len(arg)>1):
-                ''' s = open_connection(arg[1]) '''
-            else:
-                ''' s = open_connection() '''
-        else:
-            pass 
-            # goahead = execute_command(arg)

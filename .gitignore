@@ -14,6 +14,9 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
+# python not source files
+*.pyc
+
 # =========================
 # Operating System Files
 # =========================
