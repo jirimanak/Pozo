@@ -393,12 +393,12 @@ class Read1wAddr(PozoCmd):
     def __init__(self):
         PozoCmd.__init__(self)
         self.cmd = 'read1waddr'
-        self.help = 'get number of connected 1-wire devices'
+        self.help = 'get address of 1-wire device N (argument, default = 1)'
         self.pozocode = 'READ1WADDR'
           
     def method(self, args1, args2):
         msg = self.create_message()
-        msg = msg + self.cre_long_strip(args1)
+        msg = msg + self.create_value_strip('LONG', args1)
         answ = self.send_msg(msg)
         answ = self.retrieve_reply_body( answ )
         self.cmdrecord.parse_answer(answ)
@@ -551,8 +551,16 @@ class Uptime(PozoCmd):
         return self.cmdrecord.errorcode       
     
     def print_nice(self):
-        self.cmdrecord.value1 = int(self.cmdrecord.value1)
-        print "POZO uptime {0:} ".format(self.cmdrecord.value1)
+        ss = long(self.cmdrecord.value1)
+        s = ss
+        # d = days, h = hours, m = minutes, s = seconds
+        m = (s // 60)
+        s = s % 60
+        h = (m // 60)
+        m = m % 60
+        d = (h // 24)
+        h = h % 24       
+        print "POZO uptime {0:} {1:}d {2:}:{3:}:{4:}".format(ss, d,h,m,s)
 
     def print_raw(self):
         print int(self.cmdrecord.value1)        
@@ -621,10 +629,14 @@ class CmdList(object):
             cmdentry = self.cmdlist[0]
         return cmdentry
      
-    def print_listOfCommands(self):
+    def print_listOfCommands(self,  withhelp = False):
         for cmdentry in self.cmdlist:
-            print cmdentry.cmd
+            if (withhelp): 
+                print "{0:12} - {1:}".format(cmdentry.cmd, cmdentry.help)
+            else:
+                print cmdentry.cmd
     
+
     def execute(self, command):
         if properties.VERBOSE > 0:
             print "CmdList: Execute command"

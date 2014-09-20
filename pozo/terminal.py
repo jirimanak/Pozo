@@ -6,6 +6,7 @@ Created on 22.8.2014
 import Queue
 import os
 import command
+import re
 
 
 history = Queue.LifoQueue(20)
@@ -18,7 +19,7 @@ import cmd
 class ShellPrompt(cmd.Cmd):
     """Simple command processor example."""
 
-    prompt = 'prompt: '
+    prompt = 'pozo> '
     intro = "Simple command processor example."
 
     doc_header = 'doc_header'
@@ -39,6 +40,13 @@ class ShellPrompt(cmd.Cmd):
 
     def do_quit(self, line):
         return True
+
+    def do_list(self, line):
+        margs = re.split(" ", line)
+        if (margs[0] == "help"): 
+            command.CMDLIST.print_listOfCommands(True)
+        else:
+            command.CMDLIST.print_listOfCommands()
 
     def do_shell(self, line):
         "Run a shell command"
