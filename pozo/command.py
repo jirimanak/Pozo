@@ -595,8 +595,6 @@ class Sversion(PozoCmd):
 
         
         
-        
-        
 class CmdList(object):
     '''
     classdocs

@@ -22,12 +22,13 @@ import os
 #import pozo_term
 import terminal
 import properties
+import command
 
 from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
 
 __all__ = []
-__version__ = 4.1
+__version__ = 5.0
 __date__ = '2014-06-05'
 __updated__ = '2014-08-18'
 
@@ -45,8 +46,6 @@ class CLIError(Exception):
         return self.msg
     def __unicode__(self):
         return self.msg
-
-
 
 
 def main(argv=None): # IGNORE:C0111
@@ -79,63 +78,47 @@ USAGE
     try:
         # Setup argument parser
         parser = ArgumentParser(description=program_license, formatter_class=RawDescriptionHelpFormatter)
-        parser.add_argument("-r", "--recursive", dest="recurse", action="store_true", help="recurse into subfolders [default: %(default)s]")
         parser.add_argument("-v", "--VERBOSE", dest="VERBOSE", action="count", help="set verbosity level [default: %(default)s]")
         parser.add_argument("-I", "--interactive", dest="interactive", action="store_true", help="start interactive mode" )
         parser.add_argument("-H", "--header", dest="header", action="store_true", help="print out header file" )
         parser.add_argument('-V', '--version', action='version', version=program_version_message)
         parser.add_argument('-o', '--output', dest='output', action='store', help="specify out file, valid only with option -H or --header")
         parser.add_argument('-i', '--input', dest='input', action='store', help="specify path and name of file which consist of commands  ")
-        parser.add_argument('-c', '--command', dest='command', action='store', help="execute one command with max two arguments")
+        #parser.add_argument('-c', '--command', dest='command', action='store', help="execute one command with max two arguments")
         parser.add_argument('-a', '--address', dest='address', action='store', help="IP address of POZO server")
         parser.add_argument('-p', '--port', dest='port', action='store', help="listening port of POZO server")
+        # positional argument - optional 
+        parser.add_argument('command', nargs='?', default="")
 
         #parser.add_argument(dest="paths", help="paths to folder(s) with source file(s) [default: %(default)s]", metavar="path", nargs='+')
 
         # Process arguments
         args = parser.parse_args()
         
-        #paths = args.paths
         properties.VERBOSE = args.VERBOSE
-        #recurse = args.recurse
-        interact = args.interactive
-        #header = args.header
-        #acommand = args.command
         properties.POZOIP = args.address
         properties.POZOPORT = args.port
         
-        #CMDLIST = command.CmdList()
         props = properties.Properties()
         
-        '''
-        if VERBOSE > 0:
-            print("Verbose mode on")
-            if recurse:
-                print("Recursive mode on")
-            else:
-                print("Recursive mode off")
-        
-        if header == True:
-            cmdentry = CMDLIST.find_entry("header")
+              
+        if args.header == True:
+            cmdentry = command.CMDLIST.find_entry("header")
             cmdentry.print_raw();
             return 0
         
         
-        if len(command) > 0:
-            #result = "this is the end ..."
-            result = CMDLIST.execute(command)
-            return result
-        '''
-        
-        if interact == True:
+        if args.interactive == True:
             result = terminal.interactive();
             return result
-        
-         
- 
+        else:
+            if len(args.command) > 0:
+                ### execute one command 
+                result = command.CMDLIST.execute(args.command)
+                return result
+
         return 0
     
-
         
     except KeyboardInterrupt:
         ### handle keyboard interrupt ###
