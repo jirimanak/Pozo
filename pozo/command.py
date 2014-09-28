@@ -466,7 +466,7 @@ class Read1wTemp(PozoCmd):
     def __init__(self):
         PozoCmd.__init__(self)
         self.cmd = 'read1wtemp'
-        self.help = 'get number of connected 1-wire devices'
+        self.help = 'get the temperature reading from sensor #'
         self.pozocode = 'READ1WTEMP'
           
     def method(self, args1, args2):
@@ -478,7 +478,7 @@ class Read1wTemp(PozoCmd):
         return self.cmdrecord.errorcode
 
     def print_nice(self):
-        print float(self.cmdrecord.value1)
+        print "Temperature: {0:}".format(float(self.cmdrecord.value1))
         #print float(self.cmdrecord.value2)
 
     def print_raw(self):
@@ -571,6 +571,28 @@ class Uptime(PozoCmd):
 '''     
         
         
+class Sversion(PozoCmd):
+    
+    def __init__(self):
+        PozoCmd.__init__(self)
+        self.cmd = 'sversion'
+        self.help = 'Returns software version of the Arduino - Pozo Server'
+        self.pozocode = 'SVERSION'
+        self.delay = 0
+          
+    def method(self, arg1, arg2):
+        msg = self.create_message()       
+        answ = PozoCmd.pb.send_record(msg)
+        self.cmdrecord.parse_answer(answ)
+        return self.cmdrecord.errorcode       
+    
+    def print_nice(self):
+        self.cmdrecord.value1 = int(self.cmdrecord.value1)
+        print "POZO SW Version is: {0:}".format(self.cmdrecord.value1)
+
+    def print_raw(self):
+        print int(self.cmdrecord.value1)
+
         
         
         
@@ -617,6 +639,7 @@ class CmdList(object):
         self.cmdlist.append(SetVerbose())
         self.cmdlist.append(Get1wNum())
         self.cmdlist.append(Uptime())
+        self.cmdlist.append(Sversion())
 
         
     def find_entry(self, cmdstring):
