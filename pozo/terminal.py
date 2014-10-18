@@ -7,6 +7,7 @@ import Queue
 import os
 import command
 import re
+from main import  __version__
 
 
 history = Queue.LifoQueue(20)
@@ -59,6 +60,9 @@ class ShellPrompt(cmd.Cmd):
         "Print the input, replacing '$out' with the output of the last shell command"
         # Obviously not robust
         print line.replace('$out', self.last_output)
+        
+    def do_version(self, line):
+        print "client version: {0}".format(__version__)
         
     def default(self, line):
         command.CMDLIST.execute(line)

@@ -61,6 +61,7 @@ pozocode = {
   'READHEADERVER':124, # return version of header - to ensure codes compatibility         
   'UPTIME':125, # get time from the last reset
   'SVERSION':126, # get server version
+  'ISALIVE':127, # check if pozo server is alive
            
   
   
@@ -85,7 +86,7 @@ pozocode = {
 !!!!   CHANGE HEADERVERSION after changing values in pozocode dictionary !!!!!
 '''
 
-HEADERVERSION = 103
+HEADERVERSION = 104
 
 VERBOSE = 1
 # POZOIP = '127.0.0.1'

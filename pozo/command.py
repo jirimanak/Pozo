@@ -356,6 +356,30 @@ class Ping(PozoCmd):
         return int(round(time.time() * 1000))
     
     
+class IsAlive(PozoCmd):
+    
+    def __init__(self):
+        PozoCmd.__init__(self)
+        self.cmd = 'isalive'
+        self.help = 'check if POZO is connected to network and alive'
+        self.pozocode = 'ISALIVE'
+        self.delay = 0
+
+    def method(self, arg1, arg2):
+        msg = self.create_message()
+        startime = self.millis()
+        answ = self.pb.send_record(msg)
+        print answ
+        self.delay = self.millis() - startime
+        self.cmdrecord.parse_answer(answ)
+        return self.cmdrecord.errorcode
+    
+    def print_nice(self):
+        print "Reply from POZO in {:0}ms".format(self.delay)
+
+    def print_raw(self):
+        print self.delay
+
 
 class PinStatus(PozoCmd):
     
