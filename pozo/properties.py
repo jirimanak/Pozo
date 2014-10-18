@@ -19,6 +19,7 @@ pozocode = {
   'BADFORMAT': 2, 
   'BADTYPE': 3, 
   'OUTOFRANGE': 4, 
+  'UNKNWNCMD': 5, #unknown command
 
   'NULLPTR': 25,
 
@@ -86,7 +87,7 @@ pozocode = {
 !!!!   CHANGE HEADERVERSION after changing values in pozocode dictionary !!!!!
 '''
 
-HEADERVERSION = 104
+HEADERVERSION = 105
 
 VERBOSE = 1
 # POZOIP = '127.0.0.1'
