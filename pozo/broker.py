@@ -15,16 +15,17 @@ class Broker:
     classdocs
     '''
 
-    def __init__(self, host = 'localhost', port = 8888):
+    def __init__(self, ipaddr, port = 8888):
         '''
         Constructor
         '''
-        self.host = host
+        self.host = ipaddr
         self.port = int(port)
+        self.ipaddr = ipaddr   
 
         
         
-    def open_connection(self):
+    def open_connection_byhostname(self):
 
         #create an INET, STREAMing socket
         try:
@@ -51,6 +52,32 @@ class Broker:
             print 'Socket Connected to ' + self.host + ' on ip ' + remote_ip
             
         return self.s
+
+
+    def open_connection(self):
+
+        #create an INET, STREAMing socket
+        try:
+            self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        except socket.error:
+            print 'ERROR: Failed to create socket'
+            sys.exit()
+         
+        if properties.VERBOSE > 0:
+            print 'Socket Created'
+      
+        try:
+            socket.create_connection((self.ipaddr , self.port), 1)
+        except socket.error:
+            print 'ERROR: client {0}:{1} not found'.format(self.ipaddr, self.port)
+            sys.exit()
+            
+     
+        if properties.VERBOSE > 0:
+            print 'Socket Connected to ' + self.host + ' on ip ' + self.ipaddr
+            
+        return self.s
+
 
         
     def send_msg(self,  msg ):       
