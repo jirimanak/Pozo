@@ -340,6 +340,8 @@ class Ping(PozoCmd):
     def method(self, arg1, arg2):
         msg = self.create_message()
         startime = self.millis()
+        if properties.VERBOSE > 0:
+            print 'Try message to send: {0}'.format(msg)
         answ = self.pb.send_record(msg)
         print answ
         self.delay = self.millis() - startime

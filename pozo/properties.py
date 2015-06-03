@@ -89,7 +89,7 @@ pozocode = {
 
 HEADERVERSION = 105
 
-VERBOSE = 1
+VERBOSE = 5
 # POZOIP = '127.0.0.1'
 # POZOPORT = '8888'
 POZOIP = '192.168.0.15'
@@ -121,9 +121,9 @@ class Properties(object):
             
         self.section_tcpip = 'tcpip'
         self.ipaddress_name = 'ip_address'
-        self.ipaddress = '127.0.0.1'
+        self.ipaddress = '192.168.0.15'
         self.port_name = 'port'
-        self.port = 8888
+        self.port = 80
         
         self.section_output_settings = 'output_settings'
         self.outputtype_name = "output_type"
