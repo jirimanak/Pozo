@@ -87,7 +87,7 @@ class Broker:
 
         
     def send_msg(self,  msg ):       
-        ss = self.open_connection()        
+        s = self.open_connection_byhostname()        
         #Send some data to remote server
         message = "GET " + "/" + msg + " HTTP/1.1\r\n\r\n"
         if properties.VERBOSE > 1:
@@ -98,7 +98,7 @@ class Broker:
                 print 'Before s.sendall(message)'
      
     
-            ss.sendall(message)
+            s.sendall(message)
         except socket.error as e:
             #Send failed
             print 'ERROR: Send failed'
@@ -110,7 +110,7 @@ class Broker:
         #Now receive data
         x = 100;
         while (x > 0):
-            reply = ss.recv(4096)
+            reply = s.recv(4096)
             if (len(reply) > 0):
                 break;
             x -= 1
@@ -118,7 +118,7 @@ class Broker:
         if properties.VERBOSE > 0:
             print "X={0}".format(x)
     
-        ss.close()
+        s.close()
                         
         return reply
     

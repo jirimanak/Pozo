@@ -664,6 +664,7 @@ class CmdList(object):
         self.cmdlist.append(Get1wNum())
         self.cmdlist.append(Uptime())
         self.cmdlist.append(Sversion())
+        self.cmdlist.append(IsAlive())
 
         
     def find_entry(self, cmdstring):
