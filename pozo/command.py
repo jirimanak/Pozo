@@ -700,9 +700,24 @@ class CmdList(object):
                 acmd.print_error()
             else:
                 acmd.print_result(properties.OUTPUTTYPE)
+                
+        return result       
 
-            
-
+    def execute_cmdline(self, command, value, period):
+        margs = [command, value, period]
+        acmd = self.find_entry(margs[0])
+        if acmd is self.cmdlist[0]:
+            print "unknown command"
+        else:
+            result = int(acmd.execute(margs))
+            if properties.VERBOSE > 0:
+                print "Execute cmdline result = {0}".format(result)
+            if int(result) > 0:
+                acmd.print_error()
+            else:
+                acmd.print_result(properties.OUTPUTTYPE)
+                
+        return result       
 '''
    VARIABLES
 '''

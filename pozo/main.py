@@ -88,7 +88,10 @@ USAGE
         parser.add_argument('-a', '--address', dest='address', action='store', help="IP address of POZO server")
         parser.add_argument('-p', '--port', dest='port', action='store', help="listening port of POZO server")
         # positional argument - optional 
-        parser.add_argument('command', nargs='?', default="")
+        parser.add_argument('command', action='store', nargs='?', default="", help = 'command string(s)')
+        parser.add_argument('cmd_value', action='store', nargs='?', default="", help = 'command string(s)')
+        parser.add_argument('cmd_period', action='store', nargs='?', default="", help = 'command string(s)')
+       
 
         #parser.add_argument(dest="paths", help="paths to folder(s) with source file(s) [default: %(default)s]", metavar="path", nargs='+')
 
@@ -99,24 +102,28 @@ USAGE
         properties.POZOIP = args.address
         properties.POZOPORT = args.port
         
-        props = properties.Properties()
-        
-              
+        #props = properties.Properties()
+                          
         if args.header == True:
             cmdentry = command.CMDLIST.find_entry("header")
             cmdentry.print_raw();
             return 0
         
-        
         if args.interactive == True:
             result = terminal.interactive();
             return result
         else:
-            if len(args.command) > 0:
-                ### execute one command 
-                result = command.CMDLIST.execute(args.command)
+            if properties.VERBOSE > 0:
+                print 'ARGS command: {0}'.format(args.command)
+            if (args.command):
+                if (args.cmd_value):
+                    result = command.CMDLIST.execute_cmdline(args.command, args.cmd_value, args.cmd_period)
+                    if properties.VERBOSE > 0:
+                        print 'ARGS: args.command{0}'.format(args)
+                else:
+                    result = command.CMDLIST.execute(args.command)
+ 
                 return result
-
         return 0
     
         
