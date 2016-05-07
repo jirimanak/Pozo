@@ -7,7 +7,9 @@ import Queue
 import os
 import command
 import re
+
 from main import  __version__
+from main import __date__
 
 
 history = Queue.LifoQueue(20)
@@ -21,7 +23,7 @@ class ShellPrompt(cmd.Cmd):
     """Simple command processor example."""
 
     prompt = 'pozo> '
-    intro = "Simple command processor example."
+    intro = "POZO Client {0} {1}\nCommand Line Processor started".format(__version__, __date__)
 
     doc_header = 'doc_header'
     misc_header = 'misc_header'

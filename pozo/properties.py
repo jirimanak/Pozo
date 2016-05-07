@@ -59,13 +59,16 @@ pozocode = {
   'READ1WNUM':121,  # get number of devices
   'READ1WADDR':122, # read address of 1 wire device
   'READ1WTEMP':123, # read temperature of 1 wire device
-  'READHEADERVER':124, # return version of header - to ensure codes compatibility         
-  'UPTIME':125, # get time from the last reset
-  'SVERSION':126, # get server version
-  'ISALIVE':127, # check if pozo server is alive
-           
+  'READHEADERVER':124,  # return version of header - to ensure codes compatibility         
+  'UPTIME':125,         # get time from the last reset
+  'SVERSION':126,       # get server version
+  'ISALIVE':127,        # check if pozo server is alive
+
+  'SETIPADDRESS':128, # set new IP address   to ARDUINO
+  'GETIPADDRESS':129, # get new IP address from ARDUINO
+  'RESETSERVER':130,  # reset ARDUINO
   
-  
+             
 # 200 - 299 response codes
 
 # 500 - 599 sender codes
@@ -86,13 +89,12 @@ pozocode = {
 ''' 
 !!!!   CHANGE HEADERVERSION after changing values in pozocode dictionary !!!!!
 '''
-
-HEADERVERSION = 105
+HEADERVERSION = 106
 
 VERBOSE = 5
 # POZOIP = '127.0.0.1'
 # POZOPORT = '8888'
-POZOIP = '192.168.0.15'
+POZOIP = '192.168.224.15'
 POZOPORT = '80'
 OUTPUTTYPE = 600
 

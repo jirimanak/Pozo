@@ -67,7 +67,7 @@ class PozoCmd(object):
 
     def error_ok_strip(self):
         '''
-        returns 'S:101'
+        returns 'E:101'
         '''
         return "{0}:{1}:".format(properties.pozocode.get('ERRORCODE'), properties.pozocode.get("OK"))
 
@@ -592,6 +592,51 @@ class Uptime(PozoCmd):
         print int(self.cmdrecord.value1)        
         
         
+        
+class SetIPaddress(PozoCmd):
+    
+    def __init__(self):
+        PozoCmd.__init__(self)
+        self.cmd = 'setipaddress'
+        self.help = 'set new ip address to arduio. Must be restarted'
+        self.pozocode = 'SETIPADDRESS'
+        self.delay = 0
+          
+    def method(self, arg1, arg2):
+        msg = self.create_message()       
+        answ = PozoCmd.pb.send_record(msg)
+        self.cmdrecord.parse_answer(answ)
+        return self.cmdrecord.errorcode       
+    
+    def print_nice(self):
+        print "POZO SERVER IP ADDRESS {0:} {1:}d {2:}:{3:}:{4:}".format(192,168,224,15)
+
+    def print_raw(self):
+        print int(self.cmdrecord.value1)
+      
+        
+class GetIPaddress(PozoCmd):
+    
+    def __init__(self):
+        PozoCmd.__init__(self)
+        self.cmd = 'getipaddress'
+        self.help = 'set new ip address to arduino. Must be restarted'
+        self.pozocode = 'GETIPADDRESS'
+        self.delay = 0
+          
+    def method(self, arg1, arg2):
+        msg = self.create_message()       
+        answ = PozoCmd.pb.send_record(msg)
+        self.cmdrecord.parse_answer(answ)
+        return self.cmdrecord.errorcode       
+    
+    def print_nice(self):
+        print "POZO SERVER IP ADDRESS {0:} {1:}d {2:}:{3:}:{4:}".format(192,168,224,15)
+
+    def print_raw(self):
+        print int(self.cmdrecord.value1)
+        
+        
 '''
     ********** Command LIST *********************
 '''     
@@ -644,6 +689,7 @@ class CmdList(object):
         "read1wnum"
         "read1wtemp"
         "pinstatus"
+        ...
         '''
         
         self.cmdlist = []
@@ -665,6 +711,8 @@ class CmdList(object):
         self.cmdlist.append(Uptime())
         self.cmdlist.append(Sversion())
         self.cmdlist.append(IsAlive())
+        self.cmdlist.append(SetIPaddress())
+        self.cmdlist.append(GetIPaddress())
 
         
     def find_entry(self, cmdstring):
@@ -686,6 +734,7 @@ class CmdList(object):
     
 
     def execute(self, command):
+        result = 5
         if properties.VERBOSE > 0:
             print "CmdList: Execute command"
         margs = re.split(" ", command)
@@ -708,6 +757,7 @@ class CmdList(object):
         acmd = self.find_entry(margs[0])
         if acmd is self.cmdlist[0]:
             print "unknown command"
+            result = 255
         else:
             result = int(acmd.execute(margs))
             if properties.VERBOSE > 0:
@@ -717,7 +767,9 @@ class CmdList(object):
             else:
                 acmd.print_result(properties.OUTPUTTYPE)
                 
-        return result       
+        return result
+    
+           
 '''
    VARIABLES
 '''

@@ -28,9 +28,9 @@ from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
 
 __all__ = []
-__version__ = 5.0
-__date__ = '2015-06-03'
-__updated__ = '2015-06-03'
+__version__ = 6.1
+__date__ = '2015-05-07'
+__updated__ = '2015-06-06'
 
 DEBUG = 0
 TESTRUN = 0
@@ -89,8 +89,8 @@ USAGE
         parser.add_argument('-p', '--port', dest='port', action='store', help="listening port of POZO server")
         # positional argument - optional 
         parser.add_argument('command', action='store', nargs='?', default="", help = 'command string(s)')
-        parser.add_argument('cmd_value', action='store', nargs='?', default="", help = 'command string(s)')
-        parser.add_argument('cmd_period', action='store', nargs='?', default="", help = 'command string(s)')
+        parser.add_argument('cmd_value', action='store', nargs='?', default="", help = 'first command argument')
+        parser.add_argument('cmd_period', action='store', nargs='?', default="", help = 'second command argument')
        
 
         #parser.add_argument(dest="paths", help="paths to folder(s) with source file(s) [default: %(default)s]", metavar="path", nargs='+')
@@ -109,6 +109,8 @@ USAGE
             cmdentry.print_raw();
             return 0
         
+        result = 255
+        
         if args.interactive == True:
             result = terminal.interactive();
             return result
@@ -122,7 +124,8 @@ USAGE
                         print 'ARGS: args.command{0}'.format(args)
                 else:
                     result = command.CMDLIST.execute(args.command)
- 
+                    
+                print 'command result: {0}'.format(result)   
                 return result
         return 0
     
